@@ -15,6 +15,8 @@ pnpm install
 pnpm run build
 ```
 
+Note: If you're using npm, you might need `npm i --legacy-peer-deps` to install the dependencies, the node ecosystem is weird.
+
 ## Run
 
 ```bash
