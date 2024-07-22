@@ -10,11 +10,6 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest]
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -53,7 +48,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: app
+          name: llm-parameter-playground
           path: dist/
 
   release:
@@ -64,7 +59,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: app
+          name: llm-parameter-playground
           path: dist/
 
       - name: Create GitHub Release
