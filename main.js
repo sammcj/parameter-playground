@@ -75,4 +75,3 @@ app.commandLine.appendSwitch('js-flags', '--no-lazy');
 try {
   require('electron-reloader')(module)
 } catch (_) { }
-
