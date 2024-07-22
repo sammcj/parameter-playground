@@ -3,8 +3,16 @@ import Image from "next/image";
 import Link from "next/link";
 import LinkedInIcon from "../Icons/LinkedInIcon";
 import GitHubIcon from "../Icons/GithubIcon";
-
+declare global {
+  interface Window {
+    electronAPI: {
+      getAssetPath: (assetName: string) => string;
+    };
+  }
+}
 const Footer = () => {
+  const avatarSrc = 'avatar.webp';
+
   return (
     <footer>
       <div className="flex flex-col gap-4 items-center justify-center mt-24 mb-24 lg:mb-0">
@@ -15,7 +23,7 @@ const Footer = () => {
             className="flex items-center gap-2 px-4 py-2 rounded-lg bg-orange-900/10 border border-orange-800/30 text-orange-400 grayscale hover:grayscale-0 ease-in-out transition-all backdrop-blur-md"
           >
             <div className="-ml-2">
-              <Image src="/avatar.webp" width={24} height={24} alt="" />
+              <Image src={avatarSrc} width={24} height={24} alt="" />
             </div>
             My Blog
           </Link>

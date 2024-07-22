@@ -1,11 +1,17 @@
 {
   "private": true,
+  "name": "io.sammcj.llm-parameter-playground",
+  "version": "1.0.0",
+  "author": "Sam McLeod (@sammcj)",
+  "description": "A playground for exploring inference parameters with LLM models.",
+  "icon": "out/logo.png",
+  "homepage": "https://github.com/sammcj/parameter-playground",
   "scripts": {
     "dev": "next",
     "build": "next build",
     "start": "next start",
     "electron-dev": "concurrently \"npm:dev\" \"node_modules/.bin/wait-on http://localhost:3000 && electron .\"",
-    "electron-pack": "electron-builder"
+    "electron-pack": "pnpm run build && electron-builder --mac dir --config -c.mac.identity=null"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.1",
@@ -16,43 +22,46 @@
     "@radix-ui/react-switch": "1.1.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "concurrently": "^7.0.0",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.411.0",
+    "lucide-react": "^0.414.0",
     "next": "^14.2.5",
     "next-themes": "^0.3.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-spring": "^9.7.3",
+    "react-native": "^0.74.3",
+    "react-spring": "^9.7.4",
     "sonner": "^1.5.0",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "use-scramble": "^2.2.15",
-    "zustand": "^4.5.4",
-    "electron": "^25.3.1",
-    "electron-builder": "^24.6.0",
-    "wait-on": "^6.0.1"
+    "wait-on": "^7.2.0",
+    "zustand": "^4.5.4"
   },
   "devDependencies": {
     "@types/node": "20.14.11",
     "@types/react": "18.3.3",
     "autoprefixer": "^10.4.19",
+    "electron": "^31.2.1",
+    "electron-builder": "^24.13.3",
+    "electron-reloader": "^1.2.3",
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
     "typescript": "5.5.3"
   },
   "main": "main.js",
   "build": {
-    "appId": "com.example.parameterplayground",
+    "appId": "com.sammcj.llm-parameter-playground",
     "mac": {
-      "category": "public.app-category.developer-tools"
-    },
-    "win": {
-      "target": "nsis",
-      "icon": "build/icon.ico"
+      "category": "public.app-category.developer-tools",
+      "icon": "out/logo.png",
+      "target": "dir"
     },
     "linux": {
       "target": "AppImage",
-      "category": "Development"
+      "category": "Development",
+      "icon": "out/logo.png",
+      "executableName": "llm-parameter-playground"
     }
   }
 }
