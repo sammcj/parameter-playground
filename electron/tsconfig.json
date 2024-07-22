@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "sourceMap": true,
+    "strict": true,
+    "outDir": "../build",
+    "rootDir": "../",
+    "noEmitOnError": true,
+    "moduleResolution": "Bundler",
+    "typeRoots": [
+      "node_modules/@types"
+    ]
+  }
+}
