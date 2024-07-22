@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "io.sammcj.llm-parameter-playground",
+  "name": "sammcj.llm-parameter-playground",
   "version": "1.0.0",
   "author": "Sam McLeod (@sammcj)",
   "description": "A playground for exploring inference parameters with LLM models.",
@@ -11,7 +11,7 @@
     "build": "next build",
     "start": "next start",
     "electron-dev": "concurrently \"npm:dev\" \"node_modules/.bin/wait-on http://localhost:3000 && electron .\"",
-    "electron-pack": "pnpm run build && electron-builder --mac dir --config -c.mac.identity=null"
+    "electron-pack": "pnpm run build && electron-builder --linux AppImage --mac dir --config -c.mac.identity=null"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.1",
