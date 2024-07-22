@@ -81,7 +81,7 @@ const Setting = () => {
       });
     } catch (error) {
       toast.error("Failed to fetch models", {
-        description: "Please check your API URL and try again.",
+        description: "Please check your API URL and try again, error: " + error,
       });
     } finally {
       setIsFetchingModels(false);
@@ -167,18 +167,6 @@ const Setting = () => {
                 )}
               </button>
             </div>
-            <p className="text-xs text-gray-400 mt-2">
-              Need an API key? Visit{" "}
-              <a
-                href="https://console.groq.com/docs/quickstart"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-purple-400 hover:underline"
-              >
-                Groq Console
-              </a>{" "}
-              to get a free API key
-            </p>
           </div>
 
 
