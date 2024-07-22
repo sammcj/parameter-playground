@@ -1,0 +1,12 @@
+appId: "io.github.sammcj.llm-parameter-playground"
+productName: "LLM Parameter Playground"
+copyright: "Copyright (c) 2024 Sam McLeod"
+# win:
+#   target: ["dir", "portable", "zip"]
+#   icon: "public/icon.png"
+# linux:
+#   target: ["dir", "appimage", "zip"]
+#   icon: "public/icon.png"
+mac:
+  target: ["dir"]
+  # icon: "public/icon.png"
