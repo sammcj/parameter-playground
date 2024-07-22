@@ -18,9 +18,13 @@ const parameters: Record<string, Parameter> = {
   top_k: { name: "Top K", min: 1, max: 100, step: 1, default: 50, description: "Limits the number of token choices considered at each step to the top K options." },
   frequency_penalty: { name: "Frequency Penalty", min: -2, max: 2, step: 0.1, default: 0, description: "Reduces repetition by lowering the probability of tokens that have already appeared in the text." },
   presence_penalty: { name: "Presence Penalty", min: -2, max: 2, step: 0.1, default: 0, description: "Encourages the model to talk about new topics by increasing the probability of tokens that haven't appeared yet." },
-  repetition_penalty: { name: "Repetition Penalty", min: 1, max: 2, step: 0.01, default: 1, description: "Penalizes repetitions: Values above 1 decrease the likelihood of repeated tokens." },
-  length_penalty: { name: "Length Penalty", min: -2, max: 2, step: 0.1, default: 0, description: "Encourages shorter (negative values) or longer (positive values) outputs." },
-  diversity_penalty: { name: "Diversity Penalty", min: 0, max: 2, step: 0.1, default: 0, description: "Encourages the model to generate more diverse outputs." },
+  repetition_penalty: { name: "Repetition Penalty", min: 1, max: 2, step: 0.01, default: 1, description: "Penalises repetitions: Values above 1 decrease the likelihood of repeated tokens." },
+  mirostat: { name: "Mirostat", min: 0, max: 2, step: 1, default: 0, description: "Enable Mirostat sampling for controlling perplexity." },
+  mirostat_eta: { name: "Mirostat Eta", min: 0, max: 1, step: 0.01, default: 0.1, description: "Influences how quickly the algorithm responds to feedback from the generated text." },
+  mirostat_tau: { name: "Mirostat Tau", min: 0, max: 10, step: 0.1, default: 5, description: "Controls the balance between coherence and diversity of the output." },
+  repeat_last_n: { name: "Repeat Last N", min: -1, max: 64, step: 1, default: 64, description: "Sets how far back for the model to look back to prevent repetition." },
+  tfs_z: { name: "Tail Free Sampling Z", min: 1, max: 2, step: 0.1, default: 1, description: "Tail free sampling is used to reduce the impact of less probable tokens from the output." },
+  typical_p: { name: "Typical P", min: 0, max: 1, step: 0.01, default: 1, description: "Local typicality measures how similar the conditional probability of predicting a target token next is to the expected conditional probability of predicting a random token next, given the partial text already generated." },
 };
 
 

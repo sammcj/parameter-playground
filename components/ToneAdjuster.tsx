@@ -3,27 +3,38 @@ import debounce from "lodash/debounce";
 import ScrambleText from "./commons/ScrambleText";
 import ToneChangerGrid from "./ToneChangerGrid";
 import useApiSettingsStore from "../store/apiSettingsStore";
+import AdvancedParameterPlayground from "./AdvancedParameterPlayground";
+import { Switch } from "./ui/slider-switch";
+import { Label } from "./ui/label";
 
 interface Parameters {
   [key: string]: number;
 }
 
+// Valid parameters for Ollama: https://github.com/ollama/ollama/blob/main/docs/modelfile.md#valid-parameters-and-values
+// Valid parameters for Transformers: https://huggingface.co/docs/transformers/main_classes/text_generation
 const ToneAdjuster: React.FC = () => {
   const [inputText, setInputText] = useState<string>("");
   const [outputText, setOutputText] = useState<string>("");
   const [previousOutput, setPreviousOutput] = useState<string>("");
   const [currentParams, setCurrentParams] = useState<Parameters>({
-    temperature: 0.7,
-    top_p: 0.9,
-    top_k: 50,
-    frequency_penalty: 0,
-    presence_penalty: 0,
-    repetition_penalty: 1,
-    length_penalty: 0,
-    diversity_penalty: 0,
+    temperature: null, // The temperature of the model. Increasing the temperature will make the model answer more creatively. (Default: 0.8)
+    top_p: null, // Works together with top-k. A higher value (e.g., 0.95) will lead to more diverse text, while a lower value (e.g., 0.5) will generate more focused and conservative text. (Default: 0.9)
+    top_k: null, // Reduces the probability of generating nonsense. A higher value (e.g. 100) will give more diverse answers, while a lower value (e.g. 10) will be more conservative. (Default: 40)
+    frequency_penalty: null,
+    presence_penalty: null,
+    repetition_penalty: null, // Sets how strongly to penalize repetitions. A higher value (e.g., 1.5) will penalise repetitions more strongly, while a lower value (e.g., 0.9) will be more lenient. (Default: 1.1)
+    mirostat: null, // Enable Mirostat sampling for controlling perplexity. (default: 0, 0 = disabled, 1 = Mirostat, 2 = Mirostat 2.0)
+    mirostat_eta: null, // Influences how quickly the algorithm responds to feedback from the generated text. A lower learning rate will result in slower adjustments, while a higher learning rate will make the algorithm more responsive. (Default: 0.1)
+    mirostat_tau: null, // Controls the balance between coherence and diversity of the output. A lower value will result in more focused and coherent text. (Default: 5.0)
+    repeat_last_n: null, // Sets how far back for the model to look back to prevent repetition. (Default: 64, 0 = disabled, -1 = num_ctx)
+    tfs_z: null, // Tail free sampling is used to reduce the impact of less probable tokens from the output. A higher value (e.g., 2.0) will reduce the impact more, while a value of 1.0 disables this setting. (default: 1)
+    typical_p: null, // typical_p (float, optional, defaults to 1.0) — Local typicality measures how similar the conditional probability of predicting a target token next is to the expected conditional probability of predicting a random token next, given the partial text already generated. If set to float < 1, the smallest set of the most locally typical tokens with probabilities that add up to typical_p or higher are kept for generation. See this paper for more details.
   });
   const [previousParams, setPreviousParams] = useState<Parameters | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isAdvancedMode, setIsAdvancedMode] = useState<boolean>(false);
+  const [isFiveParameterMode, setIsFiveParameterMode] = useState<boolean>(false);
   const { apiKey, apiBaseUrl, modelName, maxTokens } = useApiSettingsStore();
 
   const generateTextRef = useRef<(text: string, params: Parameters) => void>();
@@ -99,10 +110,41 @@ const ToneAdjuster: React.FC = () => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 h-full">
       <div className="flex flex-col items-center justify-center">
-        <ToneChangerGrid onParameterChange={handleParameterChange} />
+        <div className="flex items-center justify-end w-full mb-4 space-x-4">
+          <div className="flex items-center space-x-2">
+            <Label htmlFor="advanced-mode" className="text-white">
+              Advanced Mode
+            </Label>
+            <Switch
+              id="advanced-mode"
+              checked={isAdvancedMode}
+              onCheckedChange={setIsAdvancedMode}
+            />
+          </div>
+          {isAdvancedMode && (
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="five-parameter-mode" className="text-white">
+                5 Parameters
+              </Label>
+              <Switch
+                id="five-parameter-mode"
+                checked={isFiveParameterMode}
+                onCheckedChange={setIsFiveParameterMode}
+              />
+            </div>
+          )}
+        </div>
+        {isAdvancedMode ? (
+          <AdvancedParameterPlayground
+            onParameterChange={handleParameterChange}
+            isFiveParameterMode={isFiveParameterMode}
+          />
+        ) : (
+          <ToneChangerGrid onParameterChange={handleParameterChange} />
+        )}
       </div>
       <div className="grid grid-rows-[1fr_1fr_1fr] gap-2 h-full">
-        {/* Input Text box remains the same */}
+        {/* Input Text box */}
         <div className="relative flex-grow border border-indigo-700/20 rounded-2xl">
           <label className="absolute top-2 left-6 text-sm font-semibold text-indigo-300">
             Input Text
@@ -117,14 +159,14 @@ const ToneAdjuster: React.FC = () => {
           />
         </div>
 
-        {/* Updated Generated Output box */}
+        {/* Generated Output box */}
         <div className="relative flex-grow rounded-2xl border-4 border-transparent bg-violet-950/60 backdrop-blur-lg">
           <label className="absolute top-2 left-6 text-xl font-semibold text-violet-300">
             Generated Output
           </label>
           <div className="absolute top-0 right-4 text-xs text-violet-300 grid grid-cols-2 gap-x-4">
             {Object.entries(currentParams).map(([key, value]) => (
-              <span key={key}>{`${key}: ${value.toFixed(2)}`}</span>
+              value && <span key={key}>{`${key}: ${value.toFixed(2)}`}</span>
             ))}
           </div>
           <div className="w-full h-full p-6 pt-24 text-lg rounded-2xl overflow-auto text-violet-100 font-medium">
@@ -136,7 +178,7 @@ const ToneAdjuster: React.FC = () => {
           </div>
         </div>
 
-        {/* Previous Generation box remains the same */}
+        {/* Previous Generation box */}
         <div className="relative flex-grow rounded-2xl border-4 border-transparent bg-violet-950/60 backdrop-blur-lg">
           <label className="absolute top-2 left-6 text-xl font-semibold text-violet-300">
             Previous Generation

@@ -6,13 +6,14 @@ import { cn } from "../../lib/utils";
 type SelectProps = React.ComponentPropsWithoutRef<typeof SelectPrimitive.Root> & {
   options: Array<{ value: string; label: string; }>;
   className?: string;
+  onValueChange: (value: string) => void;
 };
 
 const Select = React.forwardRef<
   React.ElementRef<typeof SelectPrimitive.Root>,
   SelectProps
->(({ className, options, ...props }, ref) => (
-  <SelectPrimitive.Root {...props}>
+>(({ className, options, onValueChange, ...props }, ref) => (
+  <SelectPrimitive.Root onValueChange={onValueChange} {...props}>
     <SelectPrimitive.Trigger
       ref={ref}
       className={cn(
