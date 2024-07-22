@@ -3,7 +3,9 @@
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "electron-dev": "concurrently \"npm:dev\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-pack": "electron-builder"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.1.1",
@@ -25,7 +27,9 @@
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "use-scramble": "^2.2.15",
-    "zustand": "^4.5.4"
+    "zustand": "^4.5.4",
+    "electron": "^25.3.1",
+    "electron-builder": "^24.6.0"
   },
   "devDependencies": {
     "@types/node": "20.14.11",
@@ -34,5 +38,20 @@
     "postcss": "^8.4.39",
     "tailwindcss": "^3.4.6",
     "typescript": "5.5.3"
+  },
+  "main": "main.js",
+  "build": {
+    "appId": "com.example.parameterplayground",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "build/icon.ico"
+    },
+    "linux": {
+      "target": "AppImage",
+      "category": "Development"
+    }
   }
 }

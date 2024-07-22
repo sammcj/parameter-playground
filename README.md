@@ -27,6 +27,23 @@ Note you can optionally set the environment variable `OPENAI_API_BASE` before la
 OPENAI_API_BASE=http://localhost:11434/v1 pnpm start
 ```
 
+## Build Desktop App
+
+To build the desktop app, you need to have `electron` and `electron-builder` installed as dependencies. The `package.json` file has been updated to include these dependencies and the necessary build scripts.
+
+```bash
+pnpm install
+pnpm run electron-pack
+```
+
+## Run Desktop App
+
+To run the desktop app in development mode, use the following command:
+
+```bash
+pnpm run electron-dev
+```
+
 ## Acknowledgements
 
 - [rooben-me](https://github.com/rooben-me/tone-changer-open)
