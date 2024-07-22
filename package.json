@@ -4,7 +4,7 @@
     "dev": "next",
     "build": "next build",
     "start": "next start",
-    "electron-dev": "concurrently \"npm:dev\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron-dev": "concurrently \"npm:dev\" \"node_modules/.bin/wait-on http://localhost:3000 && electron .\"",
     "electron-pack": "electron-builder"
   },
   "dependencies": {
@@ -29,7 +29,8 @@
     "use-scramble": "^2.2.15",
     "zustand": "^4.5.4",
     "electron": "^25.3.1",
-    "electron-builder": "^24.6.0"
+    "electron-builder": "^24.6.0",
+    "wait-on": "^6.0.1"
   },
   "devDependencies": {
     "@types/node": "20.14.11",
